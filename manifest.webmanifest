@@ -1,0 +1,25 @@
+{
+  "name": "سِت لاين للهندسة والإنشاءات | SETLINE",
+  "short_name": "SETLINE",
+  "description": "سِت لاين للهندسة والإنشاءات — نضع المعيار.. ونبني عليه. SETLINE Engineering & Construction.",
+  "id": "./",
+  "start_url": "./?source=app",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "dir": "rtl",
+  "lang": "ar",
+  "background_color": "#24262A",
+  "theme_color": "#24262A",
+  "categories": ["business"],
+  "icons": [
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "assets/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "أعمالنا · Projects", "url": "./#projects", "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "تواصل معنا · Contact", "url": "./#contact", "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

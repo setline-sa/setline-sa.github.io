@@ -1,0 +1,18 @@
+# Netlify settings for the SETLINE website (static site — no build step)
+[build]
+  publish = "."
+  command = ""
+
+# Always check for the newest version of the page, app files and service worker
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache"
