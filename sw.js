@@ -2,14 +2,14 @@
    SETLINE app — service worker (offline support)
    Change VERSION whenever you publish an update so users get it.
    ========================================================= */
-const VERSION = "setline-v16";
+const VERSION = "setline-v17";
 const CORE = [
   "./",
   "./index.html",
-  "./styles.css?v=16",
-  "./data.js?v=16",
-  "./map-data.js?v=16",
-  "./app.js?v=16",
+  "./styles.css?v=17",
+  "./data.js?v=17",
+  "./map-data.js?v=17",
+  "./app.js?v=17",
   "./manifest.webmanifest",
   "./assets/brand/mark-dark.png",
   "./assets/brand/symbol.png",

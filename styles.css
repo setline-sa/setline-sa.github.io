@@ -687,7 +687,7 @@ html[dir="ltr"] .city-projects button { --dir: -1; }
   .nav a { padding: 12px 0; border-bottom: 1px solid rgba(246,243,238,.1); }
   .nav__cta { text-align: center; margin-top: 16px; }
   .install { margin-inline-start: auto; }
-  .install[hidden] + .theme { margin-inline-start: auto; }
+  .install[hidden] + .theme, .header__inner > .theme:first-of-type { margin-inline-start: auto; }
   .burger { display: block; }
   .steps { grid-template-columns: 1fr; gap: 32px; }
   .steps::before { top: 0; bottom: 0; left: auto; right: auto; inset-inline-start: 7px; width: 1px; height: auto; }
