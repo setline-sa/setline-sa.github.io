@@ -66,6 +66,7 @@
           <img src="${photo(p.n, p.cover || 1)}" alt="${L.t}" loading="lazy">
           <span class="project__no">PROJECT · ${pad(p.n)}</span>
           <span class="project__count">3 ${t("lbl.photos")}</span>
+          ${p.client ? `<span class="project__client"><img src="assets/clients/${p.client}.png" alt="${clientLogo(p.client)[lang]}" loading="lazy"></span>` : ""}
         </div>
         <div class="project__body">
           <span class="project__meta">${CATEGORIES[p.cat][lang]} · ${L.c}</span>
@@ -78,8 +79,23 @@
       </article>`;
     }).join("");
   }
+  const clientLogo = (id) => CLIENTS.find((c) => c.logo === id);
   function renderClients() {
-    $("#clientsList").innerHTML = CLIENTS.map((c) => `<li class="reveal">${c[lang]}</li>`).join("");
+    // logo wall (names kept as alt text + tooltip for Google and screen readers)
+    $("#clientsList").innerHTML = CLIENTS.map((c) => `
+      <li class="client reveal" title="${c[lang]}">
+        <img src="assets/clients/${c.logo}.png" alt="${c[lang]}" loading="lazy">
+      </li>`).join("");
+    // Optical balance: give every logo about the same visual area (wide logos shrink, tall ones grow)
+    document.querySelectorAll("#clientsList img").forEach((img) => {
+      const fit = () => {
+        const r = img.naturalWidth / img.naturalHeight || 1;
+        const area = matchMedia("(max-width: 600px)").matches ? 2400 : 5600;   // px²
+        const w = Math.min(Math.sqrt(area * r), r * (matchMedia("(max-width: 600px)").matches ? 54 : 74));
+        img.style.width = Math.round(w) + "px";
+      };
+      img.complete && img.naturalWidth ? fit() : img.addEventListener("load", fit, { once: true });
+    });
   }
   function renderTeam() {
     // disciplines (no personal names)
@@ -391,7 +407,8 @@
     const p = PROJECTS.find((x) => x.n === lb.n), L = p[lang];
     $("#lbImg").src = photo(lb.n, lb.i);
     $("#lbImg").alt = L.t;
-    $("#lbCap").innerHTML = `<span class="mono">PROJECT · ${pad(p.n)} · ${lb.i}/3</span>
+    $("#lbCap").innerHTML = (p.client ? `<img class="lb-client" src="assets/clients/${p.client}.png" alt="${clientLogo(p.client)[lang]}">` : "") +
+      `<span class="mono">PROJECT · ${pad(p.n)} · ${lb.i}/3</span>
       <b>${L.t}</b> — ${t("lbl.client")}: ${L.cl} · ${t("lbl.area")}: <bdi dir="ltr">${p.area} m²</bdi> · ${t("lbl.duration")}: ${p.dur[lang]} · ${t("lbl.year")}: ${p.year}`;
   }
   function stepLb(d) { lb.i = ((lb.i - 1 + d + 3) % 3) + 1; showLb(); }
