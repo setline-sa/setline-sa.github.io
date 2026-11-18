@@ -238,24 +238,37 @@ const PROJECTS = [
     en: { t: "Research Institute", c: "Riyadh", cl: "Taibah University Research Institute", d: "Interior fit-out and furnishing suited to an academic and advisory setting, handed over ready to operate." } }
 ];
 
-/* Clients — logos from the company profile (p.19), files in assets/clients/<logo>.png */
+/* Clients — logos in assets/clients/<logo>.png (from the company profile and the client logo sheet) */
 const CLIENTS = [
-  { logo: "almajdiah",       ar: "الماجدية ريزدنس",                en: "Almajdiah Residence" },
-  { logo: "shaml",           ar: "شمل",                            en: "Shaml" },
-  { logo: "saudi-coffee",    ar: "الشركة السعودية للقهوة",          en: "Saudi Coffee Company" },
-  { logo: "core",            ar: "مقهى Core",                      en: "Core Café" },
-  { logo: "dialogue-corner", ar: "جمعية ركن الحوار",               en: "Dialogue Corner Association" },
-  { logo: "mapact",          ar: "MAP ACT",                        en: "MAP ACT" },
-  { logo: "dec",             ar: "ديناميك للاستشارات الهندسية",     en: "DEC Dynamic Engineering Consultants" },
+  { logo: "stc",             ar: "stc",                            en: "stc" },
+  { logo: "mobily",          ar: "موبايلي",                        en: "Mobily" },
   { logo: "cenomi",          ar: "سينومي",                         en: "Cenomi" },
-  { logo: "ghezlan",         ar: "غزلان للتخليص الجمركي",           en: "Ghezlan Custom Clearance" },
-  { logo: "mushar",          ar: "مشار للاستشارات",                 en: "Mushar Consulting" },
-  { logo: "zc-contracting",  ar: "ZC للمقاولات",                   en: "ZC Contracting" },
-  { logo: "red-shrimp",      ar: "مطعم ريد شريمب",                 en: "Red Shrimp Seafood Restaurant" },
-  { logo: "compass",         ar: "المدور للمقاولات",                en: "Compass Contracting" },
+  { logo: "kfmc",            ar: "مدينة الملك فهد الطبية",          en: "King Fahad Medical City" },
+  { logo: "abunayyan",       ar: "أبونيان القابضة",                 en: "Abunayyan Holding" },
   { logo: "taibah",          ar: "جامعة طيبة",                     en: "Taibah University" },
+  { logo: "saudi-coffee",    ar: "الشركة السعودية للقهوة",          en: "Saudi Coffee Company" },
+  { logo: "riyadh-cables",   ar: "مجموعة كابلات الرياض",            en: "Riyadh Cables Group" },
+  { logo: "shaml",           ar: "شمل",                            en: "Shaml" },
+  { logo: "dec",             ar: "ديناميك للاستشارات الهندسية",     en: "DEC Dynamic Engineering Consultants" },
+  { logo: "nahi",            ar: "شركة ناهي للمقاولات",             en: "NAHI Contracting Co." },
+  { logo: "alanadee",        ar: "شركة العنادي",                   en: "Alanadee Co." },
+  { logo: "capital-lights",  ar: "أضواء العاصمة",                  en: "Capital Lights" },
+  { logo: "al-rayan",        ar: "شركة الريان العربية (TNBT)",      en: "Al Rayan Arabia (TNBT)" },
+  { logo: "cities-visions",  ar: "رؤى المدن",                      en: "Cities Visions" },
+  { logo: "fast-planets",    ar: "فاست بلانتس للاستشارات الهندسية", en: "Fast Planets Engineering Design Consultants" },
+  { logo: "ssem",            ar: "S.S.E.M",                        en: "S.S.E.M" },
+  { logo: "compass",         ar: "المدور للمقاولات",                en: "Compass Contracting" },
+  { logo: "2c-contracting",  ar: "2C للمقاولات",                   en: "2C Contracting" },
+  { logo: "mushar",          ar: "مشار للاستشارات",                 en: "Mushar Consulting" },
+  { logo: "almajdiah",       ar: "الماجدية ريزدنس",                en: "Almajdiah Residence" },
+  { logo: "red-shrimp",      ar: "مطعم ريد شريمب",                 en: "Red Shrimp Seafood Restaurant" },
+  { logo: "core",            ar: "مقهى Core",                      en: "Core Café" },
+  { logo: "mapact",          ar: "MAP ACT",                        en: "MAP ACT" },
+  { logo: "ghezlan",         ar: "غزلان للتخليص الجمركي",           en: "Ghezlan Custom Clearance" },
+  { logo: "amlood",          ar: "أملود",                          en: "Amlood" },
+  { logo: "dialogue-corner", ar: "جمعية ركن الحوار",               en: "Dialogue Corner Association" },
   { logo: "irqah",           ar: "جمعية تنمية عرقة",               en: "Irqah Development Association" },
-  { logo: "amlood",          ar: "أملود",                          en: "Amlood" }
+  { logo: "calligraphy",     ar: "أحد عملاء سِت لاين",             en: "SETLINE client" }   /* TODO: client name to confirm */
 ];
 
 /* Our people by discipline (company profile p.5–6). No personal names are published on the site. */

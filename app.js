@@ -90,8 +90,8 @@
     document.querySelectorAll("#clientsList img").forEach((img) => {
       const fit = () => {
         const r = img.naturalWidth / img.naturalHeight || 1;
-        const area = matchMedia("(max-width: 600px)").matches ? 2400 : 5600;   // px²
-        const w = Math.min(Math.sqrt(area * r), r * (matchMedia("(max-width: 600px)").matches ? 54 : 74));
+        const area = matchMedia("(max-width: 600px)").matches ? 1900 : 5000;   // px²
+        const w = Math.min(Math.sqrt(area * r), r * (matchMedia("(max-width: 600px)").matches ? 44 : 64));
         img.style.width = Math.round(w) + "px";
       };
       img.complete && img.naturalWidth ? fit() : img.addEventListener("load", fit, { once: true });
