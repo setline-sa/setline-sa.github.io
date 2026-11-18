@@ -60,6 +60,8 @@ const I18N = {
     "lbl.photos": "صور",
     "seo.h1": "سِت لاين للهندسة والإنشاءات — مقاول تصميم وتنفيذ وتشطيبات في الرياض",
     "seo.title": "سِت لاين للهندسة والإنشاءات | تصميم وتنفيذ وتشطيبات في الرياض — SETLINE",
+    "consent.text": "نستخدم إحصائيات زوار مجهولة الهوية (Google Analytics) لنعرف كيف يُستخدم الموقع ونحسّنه. هل توافق؟",
+    "consent.yes": "موافق", "consent.no": "لا، شكراً",
     "profile.btn": "حمّل الملف التعريفي",
     "profile.meta": "PDF · ‏22 صفحة · 1.3 ميجا",
     "app.install": "ثبّت التطبيق",
@@ -124,6 +126,8 @@ const I18N = {
     "lbl.photos": "photos",
     "seo.h1": "SETLINE Engineering & Construction — design-and-build and fit-out contractor in Riyadh",
     "seo.title": "SETLINE Engineering & Construction | Design & Build, Fit-Out & MEP in Riyadh",
+    "consent.text": "We use anonymous visitor statistics (Google Analytics) to understand how the site is used and improve it. Do you agree?",
+    "consent.yes": "Accept", "consent.no": "No, thanks",
     "profile.btn": "Download company profile",
     "profile.meta": "PDF · 22 pages · 1.3 MB",
     "app.install": "Install app",
@@ -315,4 +319,9 @@ const REGION_NAMES = {
 };
 
 /* Contact details used by the form */
+/* ===== Site settings — change here only =====
+   url  : the site address (scripts/set_domain.py updates it when the domain is connected)
+   gaId : Google Analytics 4 measurement ID from the COMPANY account, e.g. "G-ABC123XYZ".
+          Empty = analytics off (no banner, nothing loaded). */
+const SITE = { url: "https://setline-sa.github.io/", gaId: "" };
 const CONTACT = { whatsapp: "966569555903", email: "info@setline.sa" };

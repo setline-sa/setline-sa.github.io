@@ -10,6 +10,28 @@
   const photo = (n, i) => `assets/projects/p${String(n).padStart(2, "0")}_${i}.jpg`;
   const pad = (n) => String(n).padStart(2, "0");
 
+  /* ---------- Visitor analytics: Google Analytics 4 with consent ----------
+     Off until SITE.gaId is set (data.js). Nothing is stored on the visitor's device
+     until they press "Accept"; before that GA runs cookieless (consent mode). */
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { window.dataLayer.push(arguments); }
+  window.gtag = gtag;
+  const CONSENT_KEY = "setline-consent";
+  let consent = localStorage.getItem(CONSENT_KEY);            // "granted" | "denied" | null
+  gtag("consent", "default", {
+    analytics_storage: consent === "granted" ? "granted" : "denied",
+    ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied"
+  });
+  if (SITE.gaId) {
+    const s = document.createElement("script");
+    s.async = true; s.src = "https://www.googletagmanager.com/gtag/js?id=" + SITE.gaId;
+    document.head.appendChild(s);
+    gtag("js", new Date());
+    gtag("config", SITE.gaId);
+  }
+  // send a named event (only when GA is on)
+  const track = (name, params) => { if (SITE.gaId) gtag("event", name, params || {}); };
+
   /* ---------- Static texts ---------- */
   function applyTexts() {
     document.documentElement.lang = lang;
@@ -284,6 +306,7 @@
     const list = cityProjects(c);
     const card = $("#cityCard");
     openCityId = id;
+    track("map_city_open", { city: id });
     selectCity(id);
     // cities in the same region stay labelled while zoomed (e.g. Jazan + Abu Arish)
     document.querySelectorAll("#ksaMap .city").forEach((g) => {
@@ -339,6 +362,7 @@
   let cityFilter = null;
   function showCityProjects(id) {
     cityFilter = id; filter = "all";
+    track("map_view_city_projects", { city: id });
     renderFilters(); renderProjects(true);
     $("#projects").scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
   }
@@ -413,7 +437,9 @@
 
   /* ---------- Lightbox ---------- */
   let lb = { n: 1, i: 1 };
-  function openLightbox(n) { lb = { n, i: 1 }; showLb(); $("#lightbox").hidden = false; document.body.style.overflow = "hidden"; }
+  function openLightbox(n) {
+    const pr = PROJECTS.find((x) => x.n === n);
+    track("project_view", { project_id: "P" + pad(n), project_name: pr ? pr.en.t : "" }); lb = { n, i: 1 }; showLb(); $("#lightbox").hidden = false; document.body.style.overflow = "hidden"; }
   function closeLightbox() { $("#lightbox").hidden = true; document.body.style.overflow = ""; }
   function showLb() {
     const p = PROJECTS.find((x) => x.n === lb.n), L = p[lang];
@@ -523,6 +549,7 @@
         .map((k) => `${labels[k]}: ${String(f.get(k)).trim()}`)
     );
     const body = lines.join("\n");
+    track("generate_lead", { method: via, project_type: f.get("type") || "", city: f.get("city") || "" });
     if (via === "email") {
       location.href = `mailto:${CONTACT.email}?subject=${encodeURIComponent(lines[0])}&body=${encodeURIComponent(body)}`;
     } else {
@@ -643,10 +670,29 @@
   $("#installHelp").addEventListener("click", (e) => { if (e.target.id === "installHelp") $("#installHelp").hidden = true; });
   // Bottom install bar: shown until installed, or until closed (for this visit)
   const bar = $("#installBar");
-  if (!isStandalone && sessionStorage.getItem("setline-bar") !== "closed") {
-    bar.hidden = false;
+  const showInstallBar = () => {
+    if (!isStandalone && sessionStorage.getItem("setline-bar") !== "closed") {
+      bar.hidden = false;
+      document.body.classList.add("has-install-bar");
+    }
+  };
+  // consent banner first (only when analytics is on and the visitor hasn't chosen yet), then the install bar
+  const consentBox = $("#consent");
+  if (SITE.gaId && !consent) {
+    consentBox.hidden = false;
     document.body.classList.add("has-install-bar");
-  }
+  } else showInstallBar();
+  const decide = (granted) => {
+    consent = granted ? "granted" : "denied";
+    localStorage.setItem(CONSENT_KEY, consent);
+    gtag("consent", "update", { analytics_storage: consent });
+    track("consent_choice", { choice: consent });
+    consentBox.hidden = true;
+    document.body.classList.remove("has-install-bar");
+    showInstallBar();
+  };
+  $("#consentYes").addEventListener("click", () => decide(true));
+  $("#consentNo").addEventListener("click", () => decide(false));
   $("#installBarClose").addEventListener("click", () => {
     bar.hidden = true;
     document.body.classList.remove("has-install-bar");
@@ -654,10 +700,28 @@
   });
 
   window.addEventListener("appinstalled", () => {
+    track("app_installed");
     installBtns.forEach((b) => (b.hidden = true));
     bar.hidden = true;
     document.body.classList.remove("has-install-bar");
   });
+
+  /* ---------- What visitors click (analytics events) ---------- */
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("a, button");
+    if (!a) return;
+    const sec = a.closest("section[id]");
+    const where = sec ? sec.id : a.closest("header") ? "header" : a.closest("footer") ? "footer" : (a.className || "page").split(" ")[0];
+    const href = a.getAttribute("href") || "";
+    if (href.startsWith("https://wa.me")) track("whatsapp_click", { location: where });
+    else if (href.startsWith("tel:")) track("phone_click", { location: where });
+    else if (href.startsWith("mailto:")) track("email_click", { location: where });
+    else if (a.hasAttribute("data-profile")) track("file_download", { file_name: href.split("/").pop(), location: where });
+    else if (a.hasAttribute("data-install")) track("app_install_click", { location: where });
+    else if (a.dataset.f) track("project_filter", { filter: a.dataset.f });
+    else if (a.id === "langBtn") track("language_switch", { language: lang === "ar" ? "en" : "ar" });
+    else if (a.id === "themeBtn") track("theme_switch", { theme: document.documentElement.dataset.theme === "dark" ? "light" : "dark" });
+  }, true);
 
   $("#year").textContent = new Date().getFullYear();
   renderAll();

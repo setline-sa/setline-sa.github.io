@@ -666,6 +666,26 @@ html[dir="ltr"] .city-projects button { --dir: -1; }
   .project:hover .project__img { box-shadow: none; }
 }
 
+/* ---------- Analytics consent banner ---------- */
+.consent {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 75;
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  background: var(--panel); color: var(--white); border-top: 2px solid var(--bronze);
+  padding: 14px max(16px, calc((100vw - var(--max)) / 2 + 24px)); padding-bottom: calc(14px + env(safe-area-inset-bottom));
+  box-shadow: 0 -6px 24px rgba(0,0,0,.25);
+}
+.consent[hidden] { display: none; }
+.consent p { flex: 1 1 320px; margin: 0; font-size: 14px; line-height: 1.6; opacity: .9; }
+.consent__actions { display: flex; gap: 10px; }
+.consent .btn { padding: 9px 20px; font-size: 14px; }
+.consent .btn--ghost { color: var(--white); }
+@media (max-width: 600px) {
+  .consent { padding: 12px 14px calc(12px + env(safe-area-inset-bottom)); gap: 10px; }
+  .consent p { font-size: 13px; flex-basis: 100%; }
+  .consent__actions { width: 100%; }
+  .consent .btn { flex: 1; }
+}
+
 /* ---------- Reveal on scroll ---------- */
 .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s, transform .6s; }
 .reveal.is-in { opacity: 1; transform: none; }
