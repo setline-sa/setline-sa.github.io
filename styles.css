@@ -473,6 +473,7 @@ html[data-theme="dark"] .theme .i-moon { display: none; }
   padding: 20px; box-shadow: var(--lift, 0 14px 30px -14px rgba(36,38,42,.35));
 }
 .city-card[hidden] { display: none; }
+.city-card--flip { inset-inline-end: auto; inset-inline-start: 16px; }
 @keyframes cardPop { from { opacity: 0; transform: translateY(10px) scale(.98); } }
 .city-card.is-in { animation: cardPop .4s var(--ease, ease) .15s backwards; }
 .city-card__close { position: absolute; top: 8px; inset-inline-end: 10px; background: none; border: 0; color: var(--muted);
@@ -497,6 +498,9 @@ html[data-theme="dark"] .theme .i-moon { display: none; }
 .city-card__thumb span { display: block; font-size: 12.5px; line-height: 1.45; margin-top: 6px;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .city-card__text { font-size: 14px; color: var(--muted); margin-bottom: 14px; }
+.city-card__more { font-size: 12.5px; color: var(--muted); margin: -6px 0 12px; }
+.city-card__kpis--one { grid-template-columns: 1fr; }
+.map__legend span[hidden] { display: none; }
 .city-card__cta { width: 100%; gap: 6px; }
 
 /* City chip in the project filters */

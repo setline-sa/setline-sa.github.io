@@ -11,6 +11,7 @@ const I18N = {
     "map.lgProjects": "مدينة نفذنا فيها مشاريع", "map.lgCoverage": "منطقة خدمة", "map.lgRegion": "منطقة إدارية فيها مشاريعنا",
     "map.cities": "المدن", "map.kCities": "مدن", "map.kRegions": "مناطق إدارية", "map.kProjects": "مشروعاً",
     "map.projectsIn": "مشاريع في", "map.coverOnly": "منطقة خدمة — تواصل معنا لمشروعك القادم هنا.",
+    "map.noPhotos": "{n} منفّذة في {c} — التفاصيل والصور قريباً.", "map.morePhotos": "+{n} مشاريع أخرى بدون صور بعد",
     "map.note": "يُضاف إليها مشروع على موقع جبلي (الشركة السعودية للقهوة).",
     "map.hint": "اضغط على أي مدينة لعرض مشاريعها",
     "map.region": "منطقة", "map.cArea": "م² منفّذة", "map.cYears": "سنوات العمل",
@@ -74,6 +75,7 @@ const I18N = {
     "map.lgProjects": "City with our projects", "map.lgCoverage": "Service area", "map.lgRegion": "Region with our projects",
     "map.cities": "Cities", "map.kCities": "Cities", "map.kRegions": "Regions", "map.kProjects": "Projects",
     "map.projectsIn": "Projects in", "map.coverOnly": "Service area — talk to us about your next project here.",
+    "map.noPhotos": "{n} delivered in {c} — details and photos coming soon.", "map.morePhotos": "+{n} more projects, photos coming soon",
     "map.note": "Plus one project on a mountain site (Saudi Coffee Company).",
     "map.hint": "Tap a city to see its projects",
     "map.region": "Region:", "map.cArea": "m² delivered", "map.cYears": "Years",
@@ -294,15 +296,16 @@ const DEPARTMENTS = [
 /* Cities on the map.
    "match" = the Arabic city name used in PROJECTS (ar.c) — projects are counted automatically.
    type "projects" = orange marker · type "coverage" = service area without listed projects.
+   extra = projects delivered in that city that are not (yet) in the photo portfolio — counted on the map.
    region = province name in map-data.js (highlighted when it has projects).
    label = which side of the marker the name goes on ("start" = west, "end" = east). */
 const CITIES = [
-  { id: "riyadh",   ar: "الرياض",   en: "Riyadh",   match: "الرياض",   lat: 24.7136, lon: 46.6753, type: "projects", region: "Riyadh Region",  label: "end", hq: true },
+  { id: "riyadh",   ar: "الرياض",   en: "Riyadh",   match: "الرياض",   lat: 24.7136, lon: 46.6753, type: "projects", region: "Riyadh Region",  label: "end", hq: true, extra: 3 },
   /* Jazan and Abu Arish are ~30 km apart: their labels are pulled away (dx/dy) with a leader line */
-  { id: "jazan",    ar: "جازان",    en: "Jazan",    match: "جازان",    lat: 16.8892, lon: 42.5511, type: "projects", region: "Jazan Region",   label: "start", dx: -48, dy: 16 },
+  { id: "jazan",    ar: "جازان",    en: "Jazan",    match: "جازان",    lat: 16.8892, lon: 42.5511, type: "projects", region: "Jazan Region",   label: "start", dx: -48, dy: 16, extra: 2 },
   { id: "abuarish", ar: "أبو عريش", en: "Abu Arish", match: "أبو عريش", lat: 16.9689, lon: 42.8325, type: "projects", region: "Jazan Region",   label: "end", dx: 44, dy: -40 },
-  { id: "jeddah",   ar: "جدة",      en: "Jeddah",   match: "جدة",      lat: 21.4858, lon: 39.1925, type: "coverage", region: "Makkah Region",  label: "end" },
-  { id: "dammam",   ar: "المنطقة الشرقية", en: "Eastern Province", match: "الدمام", lat: 26.4207, lon: 50.0888, type: "coverage", region: "Eastern Region", label: "start", dx: -6, dy: -34 }
+  { id: "jeddah",   ar: "جدة",      en: "Jeddah",   match: "جدة",      lat: 21.4858, lon: 39.1925, type: "projects", region: "Makkah Region",  label: "end", extra: 3 },
+  { id: "dammam",   ar: "المنطقة الشرقية", en: "Eastern Province", match: "الدمام", lat: 26.4207, lon: 50.0888, type: "projects", region: "Eastern Region", label: "start", dx: -6, dy: -34, extra: 2 }
 ];
 
 /* Province names for map labels */

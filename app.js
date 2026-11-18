@@ -120,6 +120,8 @@
   let selCity = "riyadh";
   const SVGNS = "http://www.w3.org/2000/svg";
   const cityProjects = (c) => PROJECTS.filter((p) => p.ar.c === c.match);
+  // photographed projects + projects delivered there that aren't in the photo portfolio yet
+  const cityTotal = (c) => cityProjects(c).length + (c.extra || 0);
   function mapXY(lon, lat) {
     const m = KSA_MAP;
     return [ (lon - m.lonMin) / (m.lonMax - m.lonMin) * m.w, (m.latMax - lat) / (m.latMax - m.latMin) * m.h ];
@@ -138,7 +140,7 @@
     [...svg.querySelectorAll("g")].forEach((g) => g.remove());
     $("#mapTitle").textContent = t("map.title");
 
-    const counts = Object.fromEntries(CITIES.map((c) => [c.id, cityProjects(c).length]));
+    const counts = Object.fromEntries(CITIES.map((c) => [c.id, cityTotal(c)]));
     const activeRegions = new Set(CITIES.filter((c) => counts[c.id] > 0).map((c) => c.region));
     const cityRegions = new Set(CITIES.map((c) => c.region)); // regions that already show a city label
 
@@ -225,7 +227,9 @@
         <span class="bar"><i style="width:${(counts[c.id] / max) * 100}%"></i></span>
       </button>`).join("");
     renderCityProjects();
-    const others = PROJECTS.length - mapped;
+    const lgCover = document.querySelector(".lg-cover");
+    if (lgCover) lgCover.parentElement.hidden = !CITIES.some((c) => c.type !== "projects");
+    const others = PROJECTS.length - CITIES.reduce((s, c) => s + cityProjects(c).length, 0);
     $("#mapNote").textContent = others > 0 ? t("map.note") : "";
     // fresh map = full view, no card open
     curVB = fullVB(); svg.style.setProperty("--inv", 1); svg.classList.remove("is-zoomed");
@@ -252,9 +256,13 @@
       const vw = m.w / z, vh = m.h / z;
       // desktop: city sits on the map's reading side, the card covers the other side; phone: centered
       const fx = isPhone() ? 0.5 : (lang === "ar" ? 0.68 : 0.32), fy = 0.5;
-      const vx = Math.max(0, Math.min(m.w - vw, x - vw * fx));
+      const vx = x - vw * fx;   // may go past the map edge (blank area) so edge cities like Jeddah sit in the clear spot
       const vy = Math.max(0, Math.min(m.h - vh, y - vh * fy));
       target = [vx, vy, vw, vh];
+      // edge cities (e.g. Jeddah) can't be centred: if the card would cover the city, put the card on the other side
+      const fxReal = (x - vx) / vw, card = $("#cityCard");
+      const cardOnLeft = lang === "ar";                       // default side of the card (inline-end)
+      card.classList.toggle("city-card--flip", !isPhone() && (cardOnLeft ? fxReal < 0.55 : fxReal > 0.45));
     }
     const from = curVB || fullVB();
     svg.classList.toggle("is-zoomed", !!id);
@@ -283,6 +291,8 @@
       g.classList.toggle("in-focus", k.region === c.region);
     });
     zoomMap(id);
+    const total = cityTotal(c), extra = c.extra || 0;
+    const nWord = (n) => lang === "ar" ? `${n} ${n > 10 ? "مشروعاً" : n > 2 ? "مشاريع" : n === 2 ? "مشروعان" : "مشروع"}` : `${n} project${n > 1 ? "s" : ""}`;
     const area = list.reduce((s, p) => s + p.area, 0);
     const years = list.map((p) => parseInt(p.year, 10)).filter(Boolean);
     const span = years.length ? (Math.min(...years) === Math.max(...years) ? `${Math.min(...years)}` : `${Math.min(...years)}–${Math.max(...years)}`) : "—";
@@ -294,7 +304,7 @@
       <h3 class="city-card__title">${c[lang]}</h3>
       ${list.length ? `
       <div class="city-card__kpis">
-        <div><b>${list.length}</b><span>${t("map.kProjects")}</span></div>
+        <div><b>${total}</b><span>${t("map.kProjects")}</span></div>
         <div><b dir="ltr">${fmt(area)}</b><span>${t("map.cArea")}</span></div>
         <div><b dir="ltr">${span}</b><span>${t("map.cYears")}</span></div>
       </div>
@@ -305,10 +315,12 @@
             <span>${p[lang].t}</span>
           </button>`).join("")}
       </div>
+      ${extra ? `<p class="city-card__more">${t("map.morePhotos").replace("{n}", extra)}</p>` : ""}
       <button type="button" class="btn btn--primary city-card__cta" data-show-city="${c.id}">
         ${t("map.viewAll").replace("{c}", c[lang])} <span class="mono">(${list.length})</span>
       </button>` : `
-      <p class="city-card__text">${t("map.coverOnly")}</p>
+      ${total ? `<div class="city-card__kpis city-card__kpis--one"><div><b>${total}</b><span>${t("map.kProjects")}</span></div></div>` : ""}
+      <p class="city-card__text">${total ? t("map.noPhotos").replace("{n}", nWord(total)).replace("{c}", c[lang]) : t("map.coverOnly")}</p>
       <button type="button" class="btn btn--primary city-card__cta" data-quote-city="${c.id}">
         ${t("map.quote").replace("{c}", c[lang])}
       </button>`}`;
@@ -340,7 +352,7 @@
           <img src="${photo(p.n, p.cover || 1)}" alt="" loading="lazy">
           <span>${p[lang].t}<small><bdi dir="ltr">${p.area} m²</bdi> · ${p.year}</small></span>
         </button>`).join("")
-      : `<p class="map-note">${t("map.coverOnly")}</p>`;
+      : `<p class="map-note">${(c.extra ? t("map.noPhotos").replace("{n}", lang === "ar" ? `${c.extra} ${c.extra > 2 ? "مشاريع" : c.extra === 2 ? "مشروعان" : "مشروع"}` : `${c.extra} project${c.extra > 1 ? "s" : ""}`).replace("{c}", c[lang]) : t("map.coverOnly"))}</p>`;
   }
   function selectCity(id) {
     selCity = id;
