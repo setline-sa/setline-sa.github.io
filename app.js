@@ -54,7 +54,7 @@
   }
   function renderProjects(animate) {
     const city = cityFilter && CITIES.find((x) => x.id === cityFilter);
-    const list = PROJECTS.filter((p) => (filter === "all" || p.cat === filter) && (!city || p.ar.c === city.match));
+    const list = PROJECTS.filter((p) => (filter === "all" || p.cat === filter) && (!city || [].concat(city.match).includes(p.ar.c)));
     // animate = true when a filter is clicked: cards fade/slide in one after another
     $("#projectsGrid").innerHTML = list.map((p, i) => {
       const L = p[lang];
@@ -119,7 +119,7 @@
   /* ---------- Map of the Kingdom ---------- */
   let selCity = "riyadh";
   const SVGNS = "http://www.w3.org/2000/svg";
-  const cityProjects = (c) => PROJECTS.filter((p) => p.ar.c === c.match);
+  const cityProjects = (c) => PROJECTS.filter((p) => [].concat(c.match).includes(p.ar.c));
   // photographed projects + projects delivered there that aren't in the photo portfolio yet
   const cityTotal = (c) => cityProjects(c).length + (c.extra || 0);
   function mapXY(lon, lat) {

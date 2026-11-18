@@ -300,12 +300,10 @@ const DEPARTMENTS = [
    region = province name in map-data.js (highlighted when it has projects).
    label = which side of the marker the name goes on ("start" = west, "end" = east). */
 const CITIES = [
-  { id: "riyadh",   ar: "الرياض",   en: "Riyadh",   match: "الرياض",   lat: 24.7136, lon: 46.6753, type: "projects", region: "Riyadh Region",  label: "end", hq: true, extra: 3 },
-  /* Jazan and Abu Arish are ~30 km apart: their labels are pulled away (dx/dy) with a leader line */
-  { id: "jazan",    ar: "جازان",    en: "Jazan",    match: "جازان",    lat: 16.8892, lon: 42.5511, type: "projects", region: "Jazan Region",   label: "start", dx: -48, dy: 16, extra: 2 },
-  { id: "abuarish", ar: "أبو عريش", en: "Abu Arish", match: "أبو عريش", lat: 16.9689, lon: 42.8325, type: "projects", region: "Jazan Region",   label: "end", dx: 44, dy: -40 },
-  { id: "jeddah",   ar: "جدة",      en: "Jeddah",   match: "جدة",      lat: 21.4858, lon: 39.1925, type: "projects", region: "Makkah Region",  label: "end", extra: 3 },
-  { id: "dammam",   ar: "المنطقة الشرقية", en: "Eastern Province", match: "الدمام", lat: 26.4207, lon: 50.0888, type: "projects", region: "Eastern Region", label: "start", dx: -6, dy: -34, extra: 2 }
+  { id: "riyadh", ar: "الرياض", en: "Riyadh", match: ["الرياض"],             lat: 24.7136, lon: 46.6753, type: "projects", region: "Riyadh Region", label: "end", hq: true, extra: 3 },
+  /* Jazan includes Abu Arish (same region) */
+  { id: "jazan",  ar: "جازان",  en: "Jazan",  match: ["جازان", "أبو عريش"],   lat: 16.8892, lon: 42.5511, type: "projects", region: "Jazan Region",  label: "start", extra: 4 },
+  { id: "jeddah", ar: "جدة",    en: "Jeddah", match: ["جدة"],                 lat: 21.4858, lon: 39.1925, type: "projects", region: "Makkah Region", label: "end", extra: 3 }
 ];
 
 /* Province names for map labels */
