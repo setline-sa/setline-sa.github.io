@@ -230,7 +230,7 @@
     const lgCover = document.querySelector(".lg-cover");
     if (lgCover) lgCover.parentElement.hidden = !CITIES.some((c) => c.type !== "projects");
     const others = PROJECTS.length - CITIES.reduce((s, c) => s + cityProjects(c).length, 0);
-    $("#mapNote").textContent = others > 0 ? t("map.note") : "";
+    $("#mapNote").textContent = "";   // mountain-site note removed on request
     // fresh map = full view, no card open
     curVB = fullVB(); svg.style.setProperty("--inv", 1); svg.classList.remove("is-zoomed");
     $("#cityCard").hidden = true; openCityId = null;
